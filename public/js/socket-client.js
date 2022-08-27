@@ -15,7 +15,7 @@ socket.on('connect', () => {
 });
 
 socket.on('disconnect', () => {
-  console.log('Desconectado del servidor!');
+  // console.log('Desconectado del servidor!');
   lblOffline.style.display = '';
   lblOnline.style.display = 'none';
 });
@@ -32,5 +32,7 @@ btnEnviar.addEventListener('click', () => {
     fecha: new Date().getTime(),
   };
 
-  socket.emit('enviar-mensaje', payload);
+  socket.emit('enviar-mensaje', payload, (id) => {
+    console.log('Desde el server', id);
+  });
 });
