@@ -6,12 +6,15 @@ class Server {
     this.app = express();
     this.port = process.env.PORT;
     this.server = require('http').createServer(this.app);
-    this.io = require('socket.io')(this.server);
+    this.io = require('socket.io')(this.server); // Servidor de sockets
 
     this.paths = {};
 
     this.middlewares();
     this.routes();
+
+    // Sockets
+    this.sockets();
   }
 
   middlewares() {
@@ -21,6 +24,15 @@ class Server {
 
   routes() {
     // this.app.use(this.paths.auth, require('../routes/auth.routes'));
+  }
+
+  sockets() {
+    this.io.on('connection', (socket) => {
+      console.log('Cliente conectado', socket.id);
+      socket.on('disconnect', () => {
+        console.log('Cliente desconectado', socket.id);
+      });
+    });
   }
 
   listen() {
